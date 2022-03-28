@@ -1,0 +1,66 @@
+---
+title: "First Draft"
+author: "Matthew Distell, Bo Aldridge, Haris Adnan, Lucan Franzblau, Devin Obee"
+date: "2-25-2022"
+output:
+  pdf_document: default
+  word_document: default
+subtitle: 'due February 25, 2022 by 11:59 PM '
+---
+# Load Packages
+
+```{r load-packages, message = FALSE, warning = FALSE}
+library(tidyverse) 
+install.packages("readxl")
+library("readxl")
+``` 
+# Load Data
+```{r load-data, message = F}
+myMovieData <- read_csv("IMDB-Movie-Data.csv")
+myNBAData <- read_csv("nba.games.stats.csv")
+myMusicData <- read_excel("Hot 100 Audio Features.xlsx")
+```
+# Introduction and Data
+Please introduce and discuss your data here.
+
+For our three datasets, we are using data called myMovieData, myMusicData, and
+myNBAData. MyMovieData is collected from IMDB, or the International Movie 
+Database. On that website, there is data listed for 1000 movies about 12 
+different variables, including genre, director, year released, runtime, and 
+audience rating. MyMusicData is collected from the Billboard100 Hot Charts 
+that features 29503 songs featured on the chart. The variables in the set
+include the runtime, loudness, performer, and genre of a given song. Finally, 
+our myNbaData set analyzes the results of 9840 NBA games played from 2014-2018.
+This dataset includes statistics such as Field Goal Percentage, Three Point 
+Percentage, who the home team was, and rebounding. 
+
+# Research Questions
+Please discuss your research questions here.
+
+For each of these three datasets, we have specific research questions designed
+to answer interesting questions. For the myMovieData set, we plan on analyzing
+the differences between critic reviews and fan reviews, and identify any trends
+within that framework. More generally, our question is posed as: What do critics
+prefer in a movie as compared to fans? Our brief hypothesis is that fans prefer
+more action/adventure movies with shorter runtimes, while critics prefer longer
+dramas. 
+For the myNBAData, we plan on figuring out what factors contribute most to 
+winning. We will look at the relationship between home/away, field goal 
+percentage, and rebounding numbers to find specific correlative properties with 
+winning. Our hypothesis is that home/away will matter less than many think, and 
+stats such as field goals attempted will be key as more shots and possessions 
+leads to more opportunities to score. 
+Finally, for the myMusicData, we will answer this question: What type of song
+historically becomes a hit? We hypothesize that shorter songs oftentimes rise to
+the top, while the specific genre might change. Louder, more energetic songs 
+should also perform better under this evaluation. 
+
+# Glimpse
+
+Please use `glimpse` for your datasets here.
+```{r}
+glimpse(myMovieData)
+glimpse(myNBAData)
+glimpse(myMusicData)
+```
+
