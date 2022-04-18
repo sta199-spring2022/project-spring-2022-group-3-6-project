@@ -37,6 +37,10 @@ Percentage, who the home team was, and rebounding.
 # Research Questions
 Please discuss your research questions here.
 
+1. Do critics prefer longer movies than fans? 
+2. Are normal fans more likely to prefer action/adventure movies than a critic?
+3. Other than runtime, what else causes a critic to enjoy a movie? 
+
 For each of these three datasets, we have specific research questions designed
 to answer interesting questions. For the myMovieData set, we plan on analyzing
 the differences between critic reviews and fan reviews, and identify any trends
