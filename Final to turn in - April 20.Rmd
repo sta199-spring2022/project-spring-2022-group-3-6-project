@@ -14,3 +14,8 @@ popularMovies <- myMovieData %>%
   filter(Votes >= 10000)
 ```
 
+```{r IMDB}
+popularMovies <- popularMovies %>% 
+  mutate(newRating = Rating * 10)
+```
+
