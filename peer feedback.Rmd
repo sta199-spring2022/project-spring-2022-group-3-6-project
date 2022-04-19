@@ -1,0 +1,90 @@
+---
+title: "Peer Feedback"
+author: "Matthew Distell, Bo Aldridge, Haris Adnan, Lucan Franzblau, Devin Obee"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Peer Feedback Team 5-3
+
+
+
+
+
+
+This was, through and through, a fantastic research paper. Starting off, there
+are a few grammatical errors in the first paragraph, with misplaced spaces and 
+commas. Other than that, the premise is laid out clearly, and the motivation
+is described in depth. 
+
+
+We would say that the justification and motivation for why they conducted 
+this research project was, at times, a little wordy and unnecessary. Since
+the focus of this project is on the disparities between men and women with 
+regards to their education, it would be more fitting for that to be the focus
+of the first few sentences in the Introduction. Again, this is not a major flaw,
+but at times it felt as though the focus wasn't as directed on this aspect as 
+it could have been, which was felt in other parts of the research, such as the
+visualization section.
+
+
+One very minor critique is that it was explained where the data came from 
+and why this source was reliable, but a formal citation was not made, and direct
+links to where the data could be viewed was not shown. This could potentially
+be helpful for any reader that wanted to investigate their own ideas using 
+similar data sets. 
+
+
+We also particularly liked how organized their explanation regarding their 
+data set selection and join process was held. It was easy to understand for 
+the reader, and intuitive in their code as well.
+
+
+Speaking of which, their code itself was always intuitive, and the order by 
+which they knitted the document made it very easy to read and understand 
+why they were performing the specific steps they were at those times. 
+
+
+The regression model used complimented the visualizations well. Again, the 
+visualizations were intuitive and well constructed, but unnecessary at times. 
+This is a minor critique. 
+
+
+As for the visualizations and research itself, there was great detail given and
+intense investigation made. We would venture to say that, at times, some of the
+graphs were even unnecessary, particularly the ones pertaining to the larger 
+summaries surrounding education trends that did not focus on gender, since 
+those details, while giving more context, detract from the focus of the paper 
+a bit.
+
+
+The strongest part of the paper was the combination of the summary statistics, 
+visualizations, and linear regression models in the Discussion section. While 
+there were distractions at times, it was apparent from this writing that this 
+team understood various methods of statistical interpretation while having 
+strong explanatory skills to fully elaborate on the greater ideas learned from 
+those different methods of inquiry. 
+
+
+One aspect that could have been improved though was explaining why exactly
+there specific forms of inquiry were the best for what they chose. While we, 
+as a group, found their forms of statistical inquiry to be rather intuitive and 
+functional, it could also be improved by adding brief summaries as to why what 
+they chose was the all around best method. 
+
+
+The final paragraph itself shows the strength of this project as well. The 
+authors recognize that their work is still ongoing, and point out some of the 
+ways in which their own process could have been improved. Having additional and
+more refined p-value calculations and regression models would improve the 
+validity of this project, and the authors recognize this as well.
+
+
+We would venture to say that this first draft is very near complete, seeing as 
+it has a strong null/alternative hypothesis that was clearly explored in great 
+detail. If certain minor details are cleaned up, this would essentially be a
+finished product. From the writing to the code, all aspects of this project feel
+refined, polished, and thoughtful. 
+
+
