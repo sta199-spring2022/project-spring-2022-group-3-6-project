@@ -7,60 +7,89 @@ output:
   word_document: default
 subtitle: 'due February 25, 2022 by 11:59 PM '
 ---
+
+
+# Introduction: Motivation, Context, and our Question for Research
+
+
+Ever since film itself became popularized in Western Culture at the beginning of
+the 20th century, it has stood as one of the most popular forms of artistic 
+creativity and expression. As such, the medium itself is able to showcase 
+a wide variety of different subplots, themes, and genres. However, many movies 
+today and historically follow a very similar pattern in the hopes of maximizing 
+revenue and viewership. My research group and I are interested in what exactly
+drives acclaim and viewership for fans as compared to critics. We believe that
+critics view films in a different manner than fans, such that their criteria 
+for "success" is far different from that of a fan reviewer. We also believe that 
+these differences can be specified and categorically discussed through areas such
+as genre, length, and country of origin. Our hypothesis is that lower budget movies
+will, on average, perform better in critic reviews than fan reviews, and vice versa. 
+
+
+
+
+
+
 # Load Packages
 
 ```{r load-packages, message = FALSE, warning = FALSE}
 library(tidyverse) 
+library(tidymodels)
 install.packages("readxl")
 library("readxl")
 ``` 
+
+
 # Load Data
 ```{r load-data, message = F}
 myMovieData <- read_csv("IMDB-Movie-Data.csv")
-myNBAData <- read_csv("nba.games.stats.csv")
-myMusicData <- read_excel("Hot 100 Audio Features.xlsx")
+
 ```
-# Introduction and Data
-Please introduce and discuss your data here.
-
-For our three datasets, we are using data called myMovieData, myMusicData, and
-myNBAData. MyMovieData is collected from IMDB, or the International Movie 
-Database. On that website, there is data listed for 1000 movies about 12 
-different variables, including genre, director, year released, runtime, and 
-audience rating. MyMusicData is collected from the Billboard100 Hot Charts 
-that features 29503 songs featured on the chart. The variables in the set
-include the runtime, loudness, performer, and genre of a given song. Finally, 
-our myNbaData set analyzes the results of 9840 NBA games played from 2014-2018.
-This dataset includes statistics such as Field Goal Percentage, Three Point 
-Percentage, who the home team was, and rebounding. 
-
-# Research Questions
-Please discuss your research questions here.
-
-For each of these three datasets, we have specific research questions designed
-to answer interesting questions. For the myMovieData set, we plan on analyzing
-the differences between critic reviews and fan reviews, and identify any trends
-within that framework. More generally, our question is posed as: What do critics
-prefer in a movie as compared to fans? Our brief hypothesis is that fans prefer
-more action/adventure movies with shorter runtimes, while critics prefer longer
-dramas. 
-For the myNBAData, we plan on figuring out what factors contribute most to 
-winning. We will look at the relationship between home/away, field goal 
-percentage, and rebounding numbers to find specific correlative properties with 
-winning. Our hypothesis is that home/away will matter less than many think, and 
-stats such as field goals attempted will be key as more shots and possessions 
-leads to more opportunities to score. 
-Finally, for the myMusicData, we will answer this question: What type of song
-historically becomes a hit? We hypothesize that shorter songs oftentimes rise to
-the top, while the specific genre might change. Louder, more energetic songs 
-should also perform better under this evaluation. 
 
 # Glimpse
 
 Please use `glimpse` for your datasets here.
 ```{r}
 glimpse(myMovieData)
-glimpse(myNBAData)
-glimpse(myMusicData)
+
+```
+```{r popular}
+popularMovies <- myMovieData %>% 
+  filter(Votes >= 10000)
 ```
 
+
+
+```{r linearReg}
+model1 <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  fit(`Revenue (Millions)` ~ Rating + Metascore, data = popularMovies) 
+tidy(model1)
+```
+
+
+
+# Results:Analyzing Genre vs. Critic and Fan Rating
+
+
+```{r separatingActionsAndDramas}
+popularMovies <- popularMovies %>% 
+  mutate(action = str_detect(Genre, "Action")) %>% 
+  mutate(drama = str_detect(Genre, "Drama")) %>% 
+  filter(!(action == drama))
+
+```
+
+
+
+# Discussion
+
+As showcased above, there is a clear and noticeable difference between the critic
+rating of a movie (Metacritic) vs. the fan's rating of a movie (iMDB Rating) with 
+regards to box office success. Critics, on average, tend to prefer movies of 
+all types of box office success. This could be because critics have viewed more 
+movies across their lifetime, and, as such, look for different characteristics 
+in a film than the average fan. The average fan, on the other hand, might be more
+invested in a huge blockbuster series, such as Star Wars, for instance, where 
+the high rating could also be attributed to a general "cult following" mindset 
+rather to a strict review of the quality of the film. 
