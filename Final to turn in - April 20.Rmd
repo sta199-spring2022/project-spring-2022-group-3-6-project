@@ -9,3 +9,8 @@ date: "4-19-2022"
 glimpse(myMovieData)
 ```
 
+```{r popular movie filter}
+popularMovies <- myMovieData %>% 
+  filter(Votes >= 10000)
+```
+
