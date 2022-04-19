@@ -33,3 +33,9 @@ popularMovies <- popularMovies %>%
 
 ```
 
+```{r linearReg}
+model1 <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(`Revenue (Millions)` ~ newRating + Metascore, data = popularMovies)
+tidy(model1)
+```
