@@ -43,8 +43,41 @@ library("readxl")
 # Load Data
 ```{r load-data, message = F}
 myMovieData <- read_csv("IMDB-Movie-Data.csv")
+<<<<<<< HEAD
 
 ```
+=======
+```
+# Introduction and Data
+Please introduce and discuss your data here.
+
+For our three datasets, we are using data called myMovieData, myMusicData, and
+myNBAData. MyMovieData is collected from IMDB, or the International Movie 
+Database. On that website, there is data listed for 1000 movies about 12 
+different variables, including genre, director, year released, runtime, and 
+audience rating. MyMusicData is collected from the Billboard100 Hot Charts 
+that features 29503 songs featured on the chart. The variables in the set
+include the runtime, loudness, performer, and genre of a given song. Finally, 
+our myNbaData set analyzes the results of 9840 NBA games played from 2014-2018.
+This dataset includes statistics such as Field Goal Percentage, Three Point 
+Percentage, who the home team was, and rebounding. 
+
+# Research Questions
+Please discuss your research questions here.
+
+1. Do critics prefer longer movies than fans? 
+2. Are normal fans more likely to prefer action/adventure movies than a critic?
+3. Other than runtime, what else causes a critic to enjoy a movie? 
+
+For each of these three datasets, we have specific research questions designed
+to answer interesting questions. For the myMovieData set, we plan on analyzing
+the differences between critic reviews and fan reviews, and identify any trends
+within that framework. More generally, our question is posed as: What do critics
+prefer in a movie as compared to fans? Our brief hypothesis is that fans prefer
+more action/adventure movies with shorter runtimes, while critics prefer longer
+dramas. 
+ 
+>>>>>>> d26ab6b102970f357b43d792d1ec62fa03a07487
 
 # Glimpse
 
@@ -52,6 +85,7 @@ Please use `glimpse` for your datasets here.
 ```{r}
 glimpse(myMovieData)
 
+<<<<<<< HEAD
 ```
 ```{r popular}
 popularMovies <- myMovieData %>% 
@@ -108,8 +142,16 @@ popularMovies <- popularMovies %>%
 ```{r}
 popularMovies <- popularMovies %>% 
   mutate(critic_dif_fan = Metascore - newRating)
+=======
+>>>>>>> d26ab6b102970f357b43d792d1ec62fa03a07487
 ```
+Does revenue increase along with rating? 
 
+Visualize how revenue varies by year? Which year collected the most revenue 
+
+Possible question: What is the probability that the metascore is the exact same as the rating?
+
+<<<<<<< HEAD
 
 
 
@@ -195,3 +237,6 @@ in a film than the average fan. The average fan, on the other hand, might be mor
 invested in a huge blockbuster series, such as Star Wars, for instance, where 
 the high rating could also be attributed to a general "cult following" mindset 
 rather to a strict review of the quality of the film. 
+=======
+What is the probability a randomly selected movie has a rating over 7.0?
+>>>>>>> d26ab6b102970f357b43d792d1ec62fa03a07487
