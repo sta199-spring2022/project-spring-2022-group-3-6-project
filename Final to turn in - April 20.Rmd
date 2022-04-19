@@ -19,3 +19,17 @@ popularMovies <- popularMovies %>%
   mutate(newRating = Rating * 10)
 ```
 
+```{r separatingActionsAndDramas}
+popularMovies <- popularMovies %>%
+  mutate(action = str_detect(Genre, "Action")) %>%
+  mutate(drama = str_detect(Genre, "Drama")) %>%
+  filter(!(action == drama))
+
+```
+
+```{r}
+popularMovies <- popularMovies %>%
+  mutate(critic_dif_fan = Metascore - newRating)
+
+```
+
