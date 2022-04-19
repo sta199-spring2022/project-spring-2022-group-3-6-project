@@ -5,4 +5,7 @@ author: "Matthew Distell, Bo Aldridge, Haris Adnan, Lucan Franzblau, Devin Obee"
 date: "4-19-2022"
 ---
 
+```{r movie data}
+glimpse(myMovieData)
+```
 
