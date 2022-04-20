@@ -5,19 +5,75 @@ author: "Matthew Distell, Bo Aldridge, Haris Adnan, Lucan Franzblau, Devin Obee"
 date: "4-19-2022"
 ---
 
+```{r load-packages, message = FALSE, warning = FALSE}
+library(tidyverse) 
+library(tidymodels)
+install.packages("readxl")
+library("readxl")
+``` 
+
+
+# Load Data
+```{r load-data, message = F}
+myMovieData <- read_csv("IMDB-Movie-Data.csv")
+
+```
+
+
 ```{r movie data}
 glimpse(myMovieData)
 ```
 
 ```{r popular movie filter}
 popularMovies <- myMovieData %>% 
-  filter(Votes >= 10000)
+  filter(Votes >= 8000)
 ```
 
 ```{r IMDB}
 popularMovies <- popularMovies %>% 
   mutate(newRating = Rating * 10)
 ```
+
+
+
+```{r}
+cor.test(popularMovies$newRating, popularMovies$`Revenue (Millions)`,
+  method = "spearman"
+)
+```
+
+```{r}
+cor.test(popularMovies$Metascore, popularMovies$`Revenue (Millions)`,
+  method = "spearman"
+)
+```
+
+
+
+```{r linearReg}
+model1 <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(`Revenue (Millions)` ~ newRating + Metascore, data = popularMovies)
+tidy(model1)
+```
+
+```{r}
+popularMovies %>% 
+  ggplot(aes(x = newRating, y = `Revenue (Millions)`)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) 
+  
+```
+
+```{r}
+popularMovies %>% 
+  ggplot(aes(x = Metascore, y = `Revenue (Millions)`)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) 
+  
+```
+
+
 
 ```{r separatingActionsAndDramas}
 popularMovies <- popularMovies %>%
@@ -33,9 +89,80 @@ popularMovies <- popularMovies %>%
 
 ```
 
-```{r linearReg}
-model1 <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(`Revenue (Millions)` ~ newRating + Metascore, data = popularMovies)
-tidy(model1)
+```{r load-data, message = F}
+
+mean_critic_action <- popularMovies %>% 
+  filter(action == TRUE) %>% 
+  summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
+  pull()
+
+
+mean_fan_action <- popularMovies %>% 
+  filter(action == TRUE) %>% 
+  summarise(mean_c_a = mean(newRating, na.rm = TRUE)) %>% 
+  pull()
+
+diff_mean_action <- mean_critic_action - mean_fan_action
+  
 ```
+
+
+
+```{r diffInMeanAction ex-3}
+set.seed(3)
+null_dif_mean_action <- popularMovies %>% 
+  specify(response = critic_dif_fan, explanatory = action) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in means", order = c("TRUE", "FALSE"))
+
+ null_dif_mean_action %>% 
+   get_p_value(obs_stat = diff_mean_action, direction = "both")
+```
+
+
+```{r}
+visualize(null_dif_mean_action) +
+  shade_p_value(obs_stat = diff_mean_action, direction = "both")
+```
+
+
+
+
+```{r actualDifferenceInMeansDrama}
+mean_critic_drama <- popularMovies %>% 
+  filter(drama == TRUE) %>% 
+  summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
+  pull()
+
+
+mean_fan_drama <- popularMovies %>% 
+  filter(drama == TRUE) %>% 
+  summarise(mean_c_a = mean(newRating, na.rm = TRUE)) %>% 
+  pull()
+
+diff_mean_drama <- mean_critic_drama - mean_fan_drama
+  
+```
+
+
+
+```{r diffInMeanDrama ex-3}
+set.seed(3)
+null_dif_mean_drama <- popularMovies %>% 
+  specify(response = critic_dif_fan, explanatory = drama) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 10000, type = "permute") %>%
+  calculate(stat = "diff in means", order = c("TRUE", "FALSE"))
+
+ null_dif_mean_drama %>% 
+   get_p_value(obs_stat = diff_mean_drama, direction = "both")
+```
+
+
+
+```{r}
+visualize(null_dif_mean_drama) +
+  shade_p_value(obs_stat = diff_mean_drama, direction = "both")
+```
+
