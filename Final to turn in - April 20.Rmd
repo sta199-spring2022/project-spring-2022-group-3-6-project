@@ -347,3 +347,11 @@ observed statistic is located to the left of our actual distribution. However,
 that observed statistic was far closer to the distribution in the drama graph
 as compared to the action graph. 
 
+This logically seems to make sense. Building off of our previous explanations
+of the "film background" of fans vs. critics, it would make sense that fans
+might prefer a traditional blockbuster movie, as compared to a critic who might
+prefer a slower-paced drama. Because critics might care more than fans about
+more subtle aspects of film making such as cinematography, movies, 
+such as dramas, that are slower, might focus on these aspects more and cater
+to a critic's interest. 
+
