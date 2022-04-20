@@ -6,7 +6,14 @@ output:
   pdf_document: default
   word_document: default
 subtitle: 'due April 20, 2022 by 11:59 PM '
+
 ---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
 
 
 ## Load Packages 
@@ -50,14 +57,17 @@ can illuminate broader social and cultural differences in our country.
 ## Dataset
 
 This dataset is from a csv called "IMDB-Movie-Data.csv". It was loaded into
-this project as "myMovieData."
+this project as "myMovieData." This dataset was found from data.world,
+created by user "promptcloud." This dataset looks uses scrapes publicly 
+available data from IMDb, or the International Movie Database, and contains
+movie data from 2006 to 2016.
 
-```{r movie data}
+```{r moviedata, warning=FALSE}
 glimpse(myMovieData)
 ```
 
 This myMovieData set contains the title, genre, description, director, actors,
-year of release, runtime, fan rating from iMDB (International Movie Database)
+year of release, runtime, fan rating from IMDb (International Movie Database)
 (Rating), number of fan votes, box office revenue, and critic rating (Metascore) 
 for 1000 movies. 
 
@@ -80,20 +90,20 @@ fans and critics view, for example, action movies, or dramas?
 ## Methodology Part 1
 
 Before getting started, we wanted to only look at "popular" movies. We 
-arbitrarily defined this as having over 8000 reviews on the iMDB database.
+arbitrarily defined this as having 8000 or more reviews on the IMDb database.
 Those movies with lower than that total are filtered out. This excluded 
 133 of the initial 1000 movies from myMovieData.
 
 Next, we created a new variable called newRating, which adjusts the "out-of-10"
-scale value of the iMDB rating, and puts it on an "out-of-100" scale, similar
-to that of the Metacritic scoring. 
+scale value of the IMDb rating, and puts it on an "out-of-100" scale, similar
+to that of the Metascore rating. 
 
-```{r popular movie filter}
+```{r popularFilter, warning=FALSE}
 popularMovies <- myMovieData %>% 
   filter(Votes >= 8000)
 ```
 
-```{r IMDB}
+```{r iMDBRatingTo100Scale, warning=FALSE}
 popularMovies <- popularMovies %>% 
   mutate(newRating = Rating * 10)
 ```
@@ -101,13 +111,14 @@ popularMovies <- popularMovies %>%
 
 ## Part 1: The Relationship Between Fans vs. Critic Scoring and Box Office Revenue
 
-```{r}
+
+```{r correlationOfFansAndRevenue, warning=FALSE}
 cor.test(popularMovies$newRating, popularMovies$`Revenue (Millions)`,
   method = "spearman"
 )
 ```
 
-```{r}
+```{r correlationOfCriticsAndRevenue, warning=FALSE}
 cor.test(popularMovies$Metascore, popularMovies$`Revenue (Millions)`,
   method = "spearman"
 )
@@ -115,7 +126,7 @@ cor.test(popularMovies$Metascore, popularMovies$`Revenue (Millions)`,
 
 
 
-```{r linearReg}
+```{r linearReg, warning=FALSE}
 model1 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(`Revenue (Millions)` ~ newRating + Metascore, data = popularMovies)
@@ -125,21 +136,23 @@ tidy(model1)
 
 
 
-```{r}
+```{r graphOfFansAndBox, warning=FALSE}
 popularMovies %>% 
   ggplot(aes(x = newRating, y = `Revenue (Millions)`)) + 
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Fan Ratings vs. Box Office Totals")
+  labs(title = "Fan Ratings vs. Box Office Totals") +
+  theme_bw()
   
 ```
 
-```{r}
+```{r graphOfCriticsAndBox, warning=FALSE}
 popularMovies %>% 
   ggplot(aes(x = Metascore, y = `Revenue (Millions)`)) + 
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Critic Ratings vs. Box Office Totals")
+  labs(title = "Critic Ratings vs. Box Office Totals") +
+  theme_bw()
   
 ```
 
@@ -175,13 +188,13 @@ uncorrelated with the outcome, but it does mean that once you account for the
 one factor that was statistically significant (newRating), the Metascore 
 predictor in it of itself was not making as large of a difference there. 
 Metascore predictor failed to reject the null hypothesis, while newRating
-rejected the Null Hypothesis. 
+rejected the null hypothesis. 
 
 Graphically, these same findings can be seen as well. There is a slightly 
 stronger/similar positive correlation between newRating and box office as 
 compared to Metascore and box office graphically. This, however,
-does not take into account the fact that thep-value was not found to be 
-ignificant, meaning that while there still is a positive trend between 
+does not take into account the fact that the p-value was not found to be 
+significant, meaning that while there still is a positive trend between 
 Metascore and box office, we cannot comment on its specific strength of 
 relation to box office with nearly as much certainty as we can with user 
 ratings in newRating. 
@@ -199,7 +212,7 @@ Something interesting to consider would be the differences/correlation if we
 tested everybody who just left the theater about a certain movie. Since 
 critics can be assumed to have a somewhat more uniform "film background," to
 a certain extent, it could also be assumed that users who took the time to 
-personally rate movies on iMDB also do not represent the average viewer's level
+personally rate movies on IMDb also do not represent the average viewer's level
 of interest or engagement with film in general. By sampling more people directly
 at the source, we could have a more in-depth discussion regarding personal views
 and film. 
@@ -207,8 +220,8 @@ and film.
 
 ## Methodology Part 2
 
-Before getting started with part 2, we wanted to split up Action movies from 
-Drama movies. The code below splits these two categories up, and then filters
+Before getting started with part 2, we wanted to split up action movies from 
+drama movies. The code below splits these two categories up, and then filters
 out any movie that might be labeled as both an action movie and a drama movie. 
 This decreased the amount of movies in our dataset from 877 to 596. These 596
 are all categorized as either dramas or actions, but not both. We then 
@@ -218,7 +231,7 @@ will be used in our hypothesis testing to generate an outlook into the
 relationship between these variables. 
 
 
-```{r separatingActionsAndDramas}
+```{r separatingActionsAndDramas, warning=FALSE}
 actionsAndDramas <- popularMovies %>%
   mutate(action = str_detect(Genre, "Action")) %>%
   mutate(drama = str_detect(Genre, "Drama")) %>%
@@ -226,7 +239,7 @@ actionsAndDramas <- popularMovies %>%
 
 ```
 
-```{r}
+```{r criticDifFan, warning=FALSE}
 actionsAndDramas <- actionsAndDramas %>%
   mutate(critic_dif_fan = Metascore - newRating)
 
@@ -235,7 +248,7 @@ actionsAndDramas <- actionsAndDramas %>%
 ## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
 
 
-```{r }
+```{r actualActionDifference, warning=FALSE}
 
 mean_critic_action <- actionsAndDramas %>% 
   filter(action == TRUE) %>% 
@@ -254,7 +267,7 @@ diff_mean_action <- mean_critic_action - mean_fan_action
 
 
 
-```{r diffInMeanAction ex-3}
+```{r diffInMeanActionDist, warning=FALSE}
 set.seed(3)
 null_dif_mean_action <- actionsAndDramas %>% 
   specify(response = critic_dif_fan, explanatory = action) %>% 
@@ -267,15 +280,16 @@ null_dif_mean_action <- actionsAndDramas %>%
 ```
 
 
-```{r}
+```{r visualizeAction, warning=FALSE}
 visualize(null_dif_mean_action) +
-  shade_p_value(obs_stat = diff_mean_action, direction = "both")
+  shade_p_value(obs_stat = diff_mean_action, direction = "both") +
+  theme_bw()
 ```
 
 
 
 
-```{r actualDifferenceInMeansDrama}
+```{r actualDifferenceInMeansDrama, warning=FALSE}
 mean_critic_drama <- actionsAndDramas %>% 
   filter(drama == TRUE) %>% 
   summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
@@ -293,7 +307,7 @@ diff_mean_drama <- mean_critic_drama - mean_fan_drama
 
 
 
-```{r diffInMeanDrama ex-3}
+```{r diffInMeanDramaDist, warning=FALSE}
 set.seed(3)
 null_dif_mean_drama <- actionsAndDramas %>% 
   specify(response = critic_dif_fan, explanatory = drama) %>% 
@@ -307,9 +321,10 @@ null_dif_mean_drama <- actionsAndDramas %>%
 
 
 
-```{r}
+```{r visualizeDrama, warning=FALSE}
 visualize(null_dif_mean_drama) +
-  shade_p_value(obs_stat = diff_mean_drama, direction = "both")
+  shade_p_value(obs_stat = diff_mean_drama, direction = "both") +
+  theme_bw()
 ```
 
 ## Part 2 Results and Discussion
@@ -331,7 +346,7 @@ critic views of drama movies.
 
 -   $H_0: \mu_{criticdrama} - \mu_{fandrama} = 0$
 
-The first alternative hypothesis is that there is a difference between the 
+The second alternative hypothesis is that there is a difference between the 
 fan and critic views of drama movies. 
 
 -   $H_1: \mu_{criticdrama} - \mu_{fandrama} \neq 0$
@@ -340,7 +355,7 @@ fan and critic views of drama movies.
 
 This simulation was conducted using 10000 repetitions for both in which the 
 difference in means was tested. The p-value for both of these tests was 0, 
-indicating that we can reject both null hypothesis. This means that there is
+indicating that we can reject both null hypotheses. This means that there is
 a difference between the fan and critic views for both action and drama movies.
 What we found is that critics are harsher, on a "to-100" scale, for both dramas
 and action movies relative to fans. However, critics much preferred dramas over
@@ -359,4 +374,27 @@ prefer a slower-paced drama. Because critics might care more than fans about
 more subtle aspects of film making such as cinematography, movies, 
 such as dramas, that are slower, might focus on these aspects more and cater
 to a critic's interest. 
+
+
+## Conclusion
+
+Overall, fan ratings correlated at both a higher and more significant rate than
+critic ratings with regard to box office success. Fan ratings and critic ratings
+were also statistically different with regards to mean scoring between types of 
+genres. Fans prefer both dramas and action movies as compared to critics, but
+critics preferred dramas over action movies relatively speaking. 
+
+In the future, it would be interesting to change the pool of data as a whole. 
+As mentioned in a previous paragraph, the type of people that seek to review
+ratings on IMDb and the type of person who becomes a professional film critic
+probably do not fully represent the audience as a whole. Interviewing people 
+as they left the theater might present interesting insights into this analysis.
+
+This dataset also only considered films made between 2006 and 2016, which, 
+considering the whole history of film, is a very short timespan. By adding
+more movies to this dataset as a whole, which could be done with this publicly
+accessible data, new insights into broader cultural shifts over time, rather 
+than cultural differences between subsets of American society, could be analyzed
+and offer key insights.
+
 
