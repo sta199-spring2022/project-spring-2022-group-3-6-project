@@ -1,9 +1,7 @@
 ---
 title: "April 20 - Turning in Final Report Document"
-output: html_document
 author: "Matthew Distell, Bo Aldridge, Haris Adnan, Lucan Franzblau, Devin Obee"
 date: "4-19-2022"
-date: "2-25-2022"
 output:
   pdf_document: default
   word_document: default
@@ -16,7 +14,7 @@ subtitle: 'due April 20, 2022 by 11:59 PM '
 library(tidyverse) 
 library(tidymodels)
 install.packages("readxl")
-
+library("readxl")
 ``` 
 
 
@@ -161,7 +159,7 @@ does have a relationship with the box office revenue of each specific movie.
 The formula for our linear model is as follows:
 
 $$\widehat{Revenue} = -83.8 + 2.39~fanRating + 
-0.15criticRating  $$
+0.15~criticRating  $$
 
 The only predictor that was significant at the alpha level of .05 was newRating, 
 with a p-value of .00006 and a high t-value. 
@@ -237,7 +235,7 @@ actionsAndDramas <- actionsAndDramas %>%
 ## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
 
 
-```{r load-data, message = F}
+```{r }
 
 mean_critic_action <- actionsAndDramas %>% 
   filter(action == TRUE) %>% 
