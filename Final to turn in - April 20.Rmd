@@ -16,7 +16,7 @@ subtitle: 'due April 20, 2022 by 11:59 PM '
 library(tidyverse) 
 library(tidymodels)
 install.packages("readxl")
-library("readxl")
+
 ``` 
 
 
