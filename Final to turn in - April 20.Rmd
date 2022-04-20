@@ -248,11 +248,11 @@ actionsAndDramas <- actionsAndDramas %>%
 ## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
 
 
-```{r actualActionDifference, warning=FALSE}
+```{r actualActionmeanDifference, warning=FALSE}
 
-mean_critic_action <- actionsAndDramas %>% 
-  filter(action == TRUE) %>% 
-  summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
+mean_critic_action <- popularMovies %>%
+  filter(action == TRUE) %>%
+  summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>%
   pull()
 
 
