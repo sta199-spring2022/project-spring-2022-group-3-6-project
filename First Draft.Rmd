@@ -46,8 +46,7 @@ myMovieData <- read_csv("IMDB-Movie-Data.csv")
 <<<<<<< HEAD
 
 ```
-=======
-```
+
 # Introduction and Data
 Please introduce and discuss your data here.
 
@@ -77,7 +76,7 @@ prefer in a movie as compared to fans? Our brief hypothesis is that fans prefer
 more action/adventure movies with shorter runtimes, while critics prefer longer
 dramas. 
  
->>>>>>> d26ab6b102970f357b43d792d1ec62fa03a07487
+
 
 # Glimpse
 
@@ -85,8 +84,10 @@ Please use `glimpse` for your datasets here.
 ```{r}
 glimpse(myMovieData)
 
-<<<<<<< HEAD
+
 ```
+
+
 ```{r popular}
 popularMovies <- myMovieData %>% 
   filter(Votes >= 10000)
@@ -138,24 +139,23 @@ popularMovies <- popularMovies %>%
   filter(!(action == drama))
 
 ```
+```
+
+
 
 ```{r}
 popularMovies <- popularMovies %>% 
   mutate(critic_dif_fan = Metascore - newRating)
-=======
->>>>>>> d26ab6b102970f357b43d792d1ec62fa03a07487
 ```
+
 Does revenue increase along with rating? 
 
 Visualize how revenue varies by year? Which year collected the most revenue 
 
-Possible question: What is the probability that the metascore is the exact same as the rating?
-
-<<<<<<< HEAD
+```{r load-data, message = F}
 
 
-
-```{r actualDifferenceInMeansAction}
+Possible question: What is the probability that the metascore is the exact same as the rating?```{r actualDifferenceInMeansAction}
 mean_critic_action <- popularMovies %>% 
   filter(action == TRUE) %>% 
   summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
@@ -239,4 +239,3 @@ the high rating could also be attributed to a general "cult following" mindset
 rather to a strict review of the quality of the film. 
 =======
 What is the probability a randomly selected movie has a rating over 7.0?
->>>>>>> d26ab6b102970f357b43d792d1ec62fa03a07487
