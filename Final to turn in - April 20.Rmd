@@ -158,12 +158,19 @@ have a relationship with the box office revenue of each specific movie.
 The alternative hypothesis, on the other hand, is that each specific parameter 
 does have a relationship with the box office revenue of each specific movie.
 
+The formula for our linear model is as follows:
+
+$$\widehat{Revenue} = -83.8 + 2.39~fanRating + 
+0.15criticRating  $$
+
 The only predictor that was significant at the alpha level of .05 was newRating, 
 with a p-value of .00006 and a high t-value. 
 
 The newRating slope indicates that with all else held constant, for each 1 unit 
 this movie increases in rating, the movie will earn, on average, $2.39 million 
-more at the box office. 
+more at the box office. The criticRating slope indicates that with all else held 
+constant, for each 1 unit this movie increases in rating, the movie will earn, 
+on average, $0.15 million more at the box office.
 
 This does not necessarily mean that the other predictor, Metascore, was
 uncorrelated with the outcome, but it does mean that once you account for the 
