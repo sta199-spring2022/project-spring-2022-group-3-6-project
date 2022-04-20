@@ -5,6 +5,8 @@ author: "Matthew Distell, Bo Aldridge, Haris Adnan, Lucan Franzblau, Devin Obee"
 date: "4-19-2022"
 ---
 
+
+## Load Packages 
 ```{r load-packages, message = FALSE, warning = FALSE}
 library(tidyverse) 
 library(tidymodels)
@@ -20,9 +22,26 @@ myMovieData <- read_csv("IMDB-Movie-Data.csv")
 ```
 
 
+
+## Introduction: Motivation and Context for the Research
+
+
+
+
+
+## Dataset
+
 ```{r movie data}
 glimpse(myMovieData)
 ```
+
+
+## Research Questions
+
+
+
+
+## Methodology
 
 ```{r popular movie filter}
 popularMovies <- myMovieData %>% 
@@ -35,6 +54,7 @@ popularMovies <- popularMovies %>%
 ```
 
 
+## Part 1: The Relationship Between Fans vs. Critic Scoring and Box Office Revenue
 
 ```{r}
 cor.test(popularMovies$newRating, popularMovies$`Revenue (Millions)`,
@@ -57,6 +77,17 @@ model1 <- linear_reg() %>%
 tidy(model1)
 ```
 
+
+The null hypothesis for each parameter is that each specific parameter does not
+have a relationship with the total time this person spends awake at night.
+
+The alternative hypothesis, on the other hand, is that each specific parameter 
+does have a relationship with the total time this person spends awake at night.
+
+The only predictor that was significant at the alpha level of .05 was Time To
+Sleep, with a p-value of 3.2. * 10^-11 and a high t-value. 
+
+
 ```{r}
 popularMovies %>% 
   ggplot(aes(x = newRating, y = `Revenue (Millions)`)) + 
@@ -73,6 +104,11 @@ popularMovies %>%
   
 ```
 
+## Part 1 Results
+
+## Part 1 Discussion
+
+## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
 
 
 ```{r separatingActionsAndDramas}
@@ -166,3 +202,6 @@ visualize(null_dif_mean_drama) +
   shade_p_value(obs_stat = diff_mean_drama, direction = "both")
 ```
 
+## Part 2 Results
+
+## Part 2 Discussion
