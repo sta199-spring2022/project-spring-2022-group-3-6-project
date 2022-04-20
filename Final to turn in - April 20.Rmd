@@ -35,13 +35,36 @@ myMovieData <- read_csv("IMDB-Movie-Data.csv")
 glimpse(myMovieData)
 ```
 
+This myMovieData set contains the title, genre, description, director, actors,
+year of release, runtime, fan rating (Rating), number of fan votes, box office 
+revenue, and critic rating (Metascore). For 1000 movies. 
+
 
 ## Research Questions
 
+From these broader ideas regarding movies and the relationships between 
+certain types of them, we narrowed our research into two specific areas:
 
 
+1. What is the relationship between fan ratings and critic ratings with regards
+to box office success? Do higher fan or critic ratings lead to more box office
+success? And if so, which factor contributes more?
 
-## Methodology
+2. What is the relationship between fan ratings and critic ratings with regards
+to certain genres of movies? Specifically, is there any difference between how
+fans and critics view, for example, action movies, or dramas?
+
+
+## Methodology Part 1
+
+Before getting started, we wanted to only look at "popular" movies. We 
+arbitrarily defined this as having over 8000 reviews on the iMDB database.
+Those movies with lower than that total are filtered out. This excluded 
+404 of the initial 1000 movies from myMovieData.
+
+Next, we created a new variable called newRating, which adjusts the "out-of-10"
+scale value of the iMDB rating, and puts it on an "out-of-100" scale, similar
+to that of the Metacritic scoring. 
 
 ```{r popular movie filter}
 popularMovies <- myMovieData %>% 
@@ -78,14 +101,6 @@ tidy(model1)
 ```
 
 
-The null hypothesis for each parameter is that each specific parameter does not
-have a relationship with the total time this person spends awake at night.
-
-The alternative hypothesis, on the other hand, is that each specific parameter 
-does have a relationship with the total time this person spends awake at night.
-
-The only predictor that was significant at the alpha level of .05 was Time To
-Sleep, with a p-value of 3.2. * 10^-11 and a high t-value. 
 
 
 ```{r}
@@ -104,9 +119,40 @@ popularMovies %>%
   
 ```
 
-## Part 1 Results
+## Part 1 Results and Discussion
 
-## Part 1 Discussion
+In our correlation model, we found that there was a stronger relationship
+between fan ratings and box office success (.137) as compared to critic ratings 
+and box office success (.082). 
+
+Our linear model confirms some of these findings. The null hypothesis for each 
+parameter in this model is that each specific parameter does not
+have a relationship with the box office revenue of each specific movie.
+
+The alternative hypothesis, on the other hand, is that each specific parameter 
+does have a relationship with the box office revenue of each specific movie.
+
+The only predictor that was significant at the alpha level of .05 was newRating, 
+with a p-value of .00006 and a high t-value. 
+
+The newRating slope indicates that with all else held constant, for each 1 unit 
+this movie increases in rating, the movie will earn, on average, $2.9 million 
+more at the box office. 
+
+This does not necessarily mean that the other predictor, Metascore, was
+uncorrelated with the outcome, but it does mean that once you account for the 
+one factor that was statistically significant (newRating), the Metascore 
+predictor in it of itself was not making as large of a difference there. 
+Metascore predictor failed to reject the null hypothesis, while newRating
+rejected the Null Hypothesis. 
+
+Graphically, these same findings can be seen as well. There is a slightly 
+stronger positive correlation between newRating and box office as compared to
+Metascore and box office. This does not take into account the fact that the 
+p-value was not found to be significant, meaning that while there still is a 
+positive trend between Metascore and box office, we cannot comment on its 
+specific strength of relation to box office with nearly as much certainty as 
+we can with user ratings in newRating. 
 
 ## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
 
@@ -202,6 +248,5 @@ visualize(null_dif_mean_drama) +
   shade_p_value(obs_stat = diff_mean_drama, direction = "both")
 ```
 
-## Part 2 Results
+## Part 2 Results and Discussion
 
-## Part 2 Discussion
