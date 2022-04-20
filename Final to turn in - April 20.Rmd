@@ -3,6 +3,11 @@ title: "April 20 - Turning in Final Report Document"
 output: html_document
 author: "Matthew Distell, Bo Aldridge, Haris Adnan, Lucan Franzblau, Devin Obee"
 date: "4-19-2022"
+date: "2-25-2022"
+output:
+  pdf_document: default
+  word_document: default
+subtitle: 'due April 20, 2022 by 11:59 PM '
 ---
 
 
@@ -25,19 +30,38 @@ myMovieData <- read_csv("IMDB-Movie-Data.csv")
 
 ## Introduction: Motivation and Context for the Research
 
+Movies and film have served not only as a form of entertainment in the modern
+era, but a reflection of who we are as a society, and what our culture values. 
+Analyzing not only films themselves, but the broader types of films that succeed
+can grant us many insights into our collective psyche.
 
+One interesting idea that we sought to research was the difference between the 
+preferences of fans and critics for a variety of metrics. The two main research 
+questions, that we will dive into later, center around the differences between 
+fans and critics with regards to genre preference and box office success.
+
+This dichotomy is fascinating because it represents a cultural difference 
+between factions of our society. While the average American might view certain
+types of movies as entertaining or meaningful, those who call themselves 
+"critics" might very well come from a far different background than the average
+American, and thus carry a different persepetive. Analyzing these differences
+can illuminate broader social and cultural differences in our country.
 
 
 
 ## Dataset
+
+This dataset is from a csv called "IMDB-Movie-Data.csv". It was loaded into
+this project as "myMovieData."
 
 ```{r movie data}
 glimpse(myMovieData)
 ```
 
 This myMovieData set contains the title, genre, description, director, actors,
-year of release, runtime, fan rating (Rating), number of fan votes, box office 
-revenue, and critic rating (Metascore). For 1000 movies. 
+year of release, runtime, fan rating from iMDB (International Movie Database)
+(Rating), number of fan votes, box office revenue, and critic rating (Metascore) 
+for 1000 movies. 
 
 
 ## Research Questions
@@ -60,7 +84,7 @@ fans and critics view, for example, action movies, or dramas?
 Before getting started, we wanted to only look at "popular" movies. We 
 arbitrarily defined this as having over 8000 reviews on the iMDB database.
 Those movies with lower than that total are filtered out. This excluded 
-404 of the initial 1000 movies from myMovieData.
+133 of the initial 1000 movies from myMovieData.
 
 Next, we created a new variable called newRating, which adjusts the "out-of-10"
 scale value of the iMDB rating, and puts it on an "out-of-100" scale, similar
@@ -107,7 +131,8 @@ tidy(model1)
 popularMovies %>% 
   ggplot(aes(x = newRating, y = `Revenue (Millions)`)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = FALSE) 
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Fan Ratings vs. Box Office Totals")
   
 ```
 
@@ -115,7 +140,8 @@ popularMovies %>%
 popularMovies %>% 
   ggplot(aes(x = Metascore, y = `Revenue (Millions)`)) + 
   geom_point() + 
-  geom_smooth(method = "lm", se = FALSE) 
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Critic Ratings vs. Box Office Totals")
   
 ```
 
@@ -136,7 +162,7 @@ The only predictor that was significant at the alpha level of .05 was newRating,
 with a p-value of .00006 and a high t-value. 
 
 The newRating slope indicates that with all else held constant, for each 1 unit 
-this movie increases in rating, the movie will earn, on average, $2.9 million 
+this movie increases in rating, the movie will earn, on average, $2.39 million 
 more at the box office. 
 
 This does not necessarily mean that the other predictor, Metascore, was
@@ -147,18 +173,48 @@ Metascore predictor failed to reject the null hypothesis, while newRating
 rejected the Null Hypothesis. 
 
 Graphically, these same findings can be seen as well. There is a slightly 
-stronger positive correlation between newRating and box office as compared to
-Metascore and box office. This does not take into account the fact that the 
-p-value was not found to be significant, meaning that while there still is a 
-positive trend between Metascore and box office, we cannot comment on its 
-specific strength of relation to box office with nearly as much certainty as 
-we can with user ratings in newRating. 
+stronger/similar positive correlation between newRating and box office as 
+compared to Metascore and box office graphically. This, however,
+does not take into account the fact that thep-value was not found to be 
+ignificant, meaning that while there still is a positive trend between 
+Metascore and box office, we cannot comment on its specific strength of 
+relation to box office with nearly as much certainty as we can with user 
+ratings in newRating. 
 
-## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
+These findings, logically, make sense. The fact that there is not only a 
+stronger correlation, but also a more statistically significant one between
+fan ratings and box office success makes sense given that fans using these 
+rating services should, as a whole, represent a larger portion of the 
+population, which would, in turn, represent a larger portion of the 
+ticket-purchasing constituency as compared to critics, who might come from a 
+less diverse background (many critics might have gone to film/art school, or 
+have formal education in film history, etc). 
+
+Something interesting to consider would be the differences/correlation if we 
+tested everybody who just left the theater about a certain movie. Since 
+critics can be assumed to have a somewhat more uniform "film background," to
+a certain extent, it could also be assumed that users who took the time to 
+personally rate movies on iMDB also do not represent the average viewer's level
+of interest or engagement with film in general. By sampling more people directly
+at the source, we could have a more in-depth discussion regarding personal views
+and film. 
+
+
+## Methodology Part 2
+
+Before getting started with part 2, we wanted to split up Action movies from 
+Drama movies. The code below splits these two categories up, and then filters
+out any movie that might be labeled as both an action movie and a drama movie. 
+This decreased the amount of movies in our dataset from 877 to 596. These 596
+are all categorized as either dramas or actions, but not both. We then 
+created a new variable, critic_dif_fan, that showed the difference between
+the critics view of a movie and the fans view of a movie numerically. This
+will be used in our hypothesis testing to generate an outlook into the 
+relationship between these variables. 
 
 
 ```{r separatingActionsAndDramas}
-popularMovies <- popularMovies %>%
+actionsAndDramas <- popularMovies %>%
   mutate(action = str_detect(Genre, "Action")) %>%
   mutate(drama = str_detect(Genre, "Drama")) %>%
   filter(!(action == drama))
@@ -166,20 +222,23 @@ popularMovies <- popularMovies %>%
 ```
 
 ```{r}
-popularMovies <- popularMovies %>%
+actionsAndDramas <- actionsAndDramas %>%
   mutate(critic_dif_fan = Metascore - newRating)
 
 ```
 
+## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
+
+
 ```{r load-data, message = F}
 
-mean_critic_action <- popularMovies %>% 
+mean_critic_action <- actionsAndDramas %>% 
   filter(action == TRUE) %>% 
   summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
   pull()
 
 
-mean_fan_action <- popularMovies %>% 
+mean_fan_action <- actionsAndDramas %>% 
   filter(action == TRUE) %>% 
   summarise(mean_c_a = mean(newRating, na.rm = TRUE)) %>% 
   pull()
@@ -192,7 +251,7 @@ diff_mean_action <- mean_critic_action - mean_fan_action
 
 ```{r diffInMeanAction ex-3}
 set.seed(3)
-null_dif_mean_action <- popularMovies %>% 
+null_dif_mean_action <- actionsAndDramas %>% 
   specify(response = critic_dif_fan, explanatory = action) %>% 
   hypothesise(null = "independence") %>% 
   generate(reps = 10000, type = "permute") %>%
@@ -212,13 +271,13 @@ visualize(null_dif_mean_action) +
 
 
 ```{r actualDifferenceInMeansDrama}
-mean_critic_drama <- popularMovies %>% 
+mean_critic_drama <- actionsAndDramas %>% 
   filter(drama == TRUE) %>% 
   summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
   pull()
 
 
-mean_fan_drama <- popularMovies %>% 
+mean_fan_drama <- actionsAndDramas %>% 
   filter(drama == TRUE) %>% 
   summarise(mean_c_a = mean(newRating, na.rm = TRUE)) %>% 
   pull()
@@ -231,7 +290,7 @@ diff_mean_drama <- mean_critic_drama - mean_fan_drama
 
 ```{r diffInMeanDrama ex-3}
 set.seed(3)
-null_dif_mean_drama <- popularMovies %>% 
+null_dif_mean_drama <- actionsAndDramas %>% 
   specify(response = critic_dif_fan, explanatory = drama) %>% 
   hypothesise(null = "independence") %>% 
   generate(reps = 10000, type = "permute") %>%
@@ -249,4 +308,42 @@ visualize(null_dif_mean_drama) +
 ```
 
 ## Part 2 Results and Discussion
+
+There will be two separate null hypotheses for this part of the report.
+
+The first null hypothesis is that there is no difference between the mean fan 
+and critic views of action movies.
+
+-   $H_0: \mu_{criticaction} - \mu_{fanaction} = 0$
+
+The first alternative hypothesis is that there is a difference between the 
+fan and critic views of action movies. 
+
+-   $H_1: \mu_{criticaction} - \mu_{fanaction} \neq 0$
+
+The second null hypothesis is that there is no difference between the fan and 
+critic views of drama movies. 
+
+-   $H_0: \mu_{criticdrama} - \mu_{fandrama} = 0$
+
+The first alternative hypothesis is that there is a difference between the 
+fan and critic views of drama movies. 
+
+-   $H_1: \mu_{criticdrama} - \mu_{fandrama} \neq 0$
+
+
+
+This simulation was conducted using 10000 repetitions for both in which the 
+difference in means was tested. The p-value for both of these tests was 0, 
+indicating that we can reject both null hypothesis. This means that there is
+a difference between the fan and critic views for both action and drama movies.
+What we found is that critics are harsher, on a "to-100" scale, for both dramas
+and action movies relative to fans. However, critics much preferred dramas over
+action movies as compared to fans, seeing as the observed statistic for the mean 
+difference in action between critics and fans was -13.1 points, while the 
+mean difference for dramas was -4.8 points. This can be seen graphically,
+as in both representations of the distributions, our red line representing our
+observed statistic is located to the left of our actual distribution. However,
+that observed statistic was far closer to the distribution in the drama graph
+as compared to the action graph. 
 
