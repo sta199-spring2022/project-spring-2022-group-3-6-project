@@ -98,14 +98,17 @@ Next, we created a new variable called newRating, which adjusts the "out-of-10"
 scale value of the IMDb rating, and puts it on an "out-of-100" scale, similar
 to that of the Metascore rating. 
 
-```{r popularFilter, warning=FALSE}
+```{r popularFilter}
 popularMovies <- myMovieData %>% 
   filter(Votes >= 8000)
 ```
 
-```{r iMDBRatingTo100Scale, warning=FALSE}
+
+
+```{r iMDBRatingTo100Scale}
 popularMovies <- popularMovies %>% 
   mutate(newRating = Rating * 10)
+popularMovies
 ```
 
 
@@ -237,6 +240,7 @@ actionsAndDramas <- popularMovies %>%
   mutate(drama = str_detect(Genre, "Drama")) %>%
   filter(!(action == drama))
 
+actionsAndDramas
 ```
 
 ```{r criticDifFan, warning=FALSE}
