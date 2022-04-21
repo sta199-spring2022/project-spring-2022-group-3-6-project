@@ -248,11 +248,11 @@ actionsAndDramas <- actionsAndDramas %>%
 ## Part 2: Hypothesis Testing for the Difference in Genre Preferences Between Fans and Critics
 
 
-```{r actualActionmeanDifference, warning=FALSE}
+```{r actualActionDifference, warning=FALSE}
 
-mean_critic_action <- popularMovies %>%
-  filter(action == TRUE) %>%
-  summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>%
+mean_critic_action <- actionsAndDramas %>% 
+  filter(action == TRUE) %>% 
+  summarise(mean_c_a = mean(Metascore, na.rm = TRUE)) %>% 
   pull()
 
 
@@ -396,5 +396,4 @@ more movies to this dataset as a whole, which could be done with this publicly
 accessible data, new insights into broader cultural shifts over time, rather 
 than cultural differences between subsets of American society, could be analyzed
 and offer key insights.
-
 
