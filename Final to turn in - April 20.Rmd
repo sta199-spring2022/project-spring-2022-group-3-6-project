@@ -92,7 +92,7 @@ fans and critics view, for example, action movies, or dramas?
 Before getting started, we wanted to only look at "popular" movies. We 
 arbitrarily defined this as having 8000 or more reviews on the IMDb database.
 Those movies with lower than that total are filtered out. This excluded 
-133 of the initial 1000 movies from myMovieData.
+123 of the initial 1000 movies from myMovieData.
 
 Next, we created a new variable called newRating, which adjusts the "out-of-10"
 scale value of the IMDb rating, and puts it on an "out-of-100" scale, similar
@@ -108,7 +108,7 @@ popularMovies <- myMovieData %>%
 ```{r iMDBRatingTo100Scale, warning=FALSE}
 popularMovies <- popularMovies %>% 
   mutate(newRating = Rating * 10)
-popularMovies
+
 ```
 
 
@@ -165,14 +165,14 @@ In our correlation model, we found that there was a stronger relationship
 between fan ratings and box office success (.137) as compared to critic ratings 
 and box office success (.082). 
 
-Our linear model confirms some of these findings. The null hypothesis for each 
-parameter in this model is that each specific parameter does not
+Our linear regression model confirms some of these findings. The null hypothesis 
+for each parameter in this model is that each specific parameter does not
 have a relationship with the box office revenue of each specific movie.
 
 The alternative hypothesis, on the other hand, is that each specific parameter 
 does have a relationship with the box office revenue of each specific movie.
 
-The formula for our linear model is as follows:
+The formula for our linear regression model is as follows:
 
 $$\widehat{Revenue} = -83.8 + 2.39~fanRating + 
 0.15~criticRating  $$
@@ -240,7 +240,7 @@ actionsAndDramas <- popularMovies %>%
   mutate(drama = str_detect(Genre, "Drama")) %>%
   filter(!(action == drama))
 
-actionsAndDramas
+
 ```
 
 ```{r criticDifFan, warning=FALSE}
@@ -361,15 +361,15 @@ This simulation was conducted using 10000 repetitions for both in which the
 difference in means was tested. The p-value for both of these tests was 0, 
 indicating that we can reject both null hypotheses. This means that there is
 a difference between the fan and critic views for both action and drama movies.
-What we found is that critics are harsher, on a "to-100" scale, for both dramas
-and action movies relative to fans. However, critics much preferred dramas over
-action movies as compared to fans, seeing as the observed statistic for the mean 
-difference in action between critics and fans was -13.1 points, while the 
-mean difference for dramas was -4.8 points. This can be seen graphically,
-as in both representations of the distributions, our red line representing our
-observed statistic is located to the left of our actual distribution. However,
-that observed statistic was far closer to the distribution in the drama graph
-as compared to the action graph. 
+What we found is that critics are harsher, on a "0-to-100" scale, for both 
+dramas and action movies relative to fans. However, critics much preferred 
+dramas over action movies as compared to fans, seeing as the observed 
+statistic for the mean difference in action between critics and fans was 
+-13.1 points, while the mean difference for dramas was -4.8 points. 
+This can be seen graphically, as in both representations of the distributions, 
+our red line representing our observed statistic is located to the left of our 
+actual distribution. However, that observed statistic was far closer to the 
+distribution in the drama graph as compared to the action graph. 
 
 This logically seems to make sense. Building off of our previous explanations
 of the "film background" of fans vs. critics, it would make sense that fans
@@ -388,16 +388,17 @@ were also statistically different with regards to mean scoring between types of
 genres. Fans prefer both dramas and action movies as compared to critics, but
 critics preferred dramas over action movies relatively speaking. 
 
-In the future, it would be interesting to change the pool of data as a whole. 
-As mentioned in a previous paragraph, the type of people that seek to review
-ratings on IMDb and the type of person who becomes a professional film critic
-probably do not fully represent the audience as a whole. Interviewing people 
-as they left the theater might present interesting insights into this analysis.
+If we could do this project again, it would be interesting to change the pool 
+of data as a whole. As mentioned in a previous paragraph, the type of people 
+that seek to review ratings on IMDb and the type of person who becomes a 
+professional film critic probably do not fully represent the audience as a whole. 
+Interviewing people as they left the theater might present interesting insights 
+into this analysis.
 
 This dataset also only considered films made between 2006 and 2016, which, 
-considering the whole history of film, is a very short timespan. By adding
-more movies to this dataset as a whole, which could be done with this publicly
-accessible data, new insights into broader cultural shifts over time, rather 
-than cultural differences between subsets of American society, could be analyzed
-and offer key insights.
+considering the whole history of film, is a very short time span. By adding
+more movies to this dataset as a whole, which we could have done with this 
+publicly accessible data, new insights into broader cultural shifts over time, 
+rather than cultural differences between subsets of American society, 
+could be analyzed and offer key insights.
 
